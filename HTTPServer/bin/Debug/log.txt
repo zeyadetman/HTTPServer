@@ -1,0 +1,4 @@
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at HTTPServer.Request.LoadHeaderLines() in f:\FCIS\Year 4\Computer Network\Template[2016-2017]\HTTPServer\Request.cs:line 104
+   at HTTPServer.Request.ParseRequest() in f:\FCIS\Year 4\Computer Network\Template[2016-2017]\HTTPServer\Request.cs:line 66
+   at HTTPServer.Server.HandleRequest(Request request) in f:\FCIS\Year 4\Computer Network\Template[2016-2017]\HTTPServer\Server.cs:line 95

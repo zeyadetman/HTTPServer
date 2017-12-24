@@ -45,7 +45,6 @@ namespace HTTPServer
         /// <returns>True if parsing succeeds, false otherwise.</returns>
         public bool ParseRequest()
         {
-            throw new NotImplementedException();
 
             //TODO: parse the receivedRequest using the \r\n delimeter
             //done
@@ -65,6 +64,7 @@ namespace HTTPServer
             // Load header lines into HeaderLines dictionary
             //done
             if(!LoadHeaderLines()) return false;
+            return true;
         }
 
         private bool ParseRequestLine()
@@ -85,7 +85,8 @@ namespace HTTPServer
                     this.httpVersion = HTTPVersion.HTTP11;
                     break;
             }
-            return !ValidateIsURI(relativeURI) ? false : true;
+            if(!ValidateIsURI(relativeURI)) return false;
+            return true;
 
         }
 
@@ -96,7 +97,7 @@ namespace HTTPServer
         //done
         private bool LoadHeaderLines()
         {
-            for (int i = 0; i < this.requestLines.Length-2; i++)
+            for (int i = 1; i < this.requestLines.Length-2; i++)
             {
                 string[] HeaderLine = requestLines[i].Split(new string[] {":"}, StringSplitOptions.RemoveEmptyEntries);
                 if (HeaderLine.Length < 2) return false;

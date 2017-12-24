@@ -32,8 +32,13 @@ namespace HTTPServer
         {
             // TODO: Add headlines (Content-Type, Content-Length,Date, [location if there is redirection])
             //done
-            string headLine = "Content-Type: " + contentType + ", Content-Length: " + content.Length + ", Date: " + DateTime.Now + ", location: " + redirectoinPath;
-            headerLines.Add(headLine);
+            headerLines.Add("Content-Type: " + contentType);
+            headerLines.Add("Content-Length: " + content.Length);
+            headerLines.Add("Date: " + DateTime.Now);
+            if (redirectoinPath != "") headerLines.Add("location: " + redirectoinPath);
+
+
+
             
             // TODO: Create the request string
             //done

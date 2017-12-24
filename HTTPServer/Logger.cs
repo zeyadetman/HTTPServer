@@ -23,6 +23,7 @@ namespace HTTPServer
                 using (StreamWriter sw = File.CreateText(fileName))
                 {
                     sw.Write(ex);
+                    sw.Close();
                 }
 
             }
