@@ -16,13 +16,12 @@ namespace HTTPServer
             string fileName = "log.txt";
             try
             {
-                if (File.Exists(fileName))
+                
+                
+                using (StreamWriter sw = new StreamWriter(fileName, true))
                 {
-                    File.Delete(fileName);
-                }
-                using (StreamWriter sw = File.CreateText(fileName))
-                {
-                    sw.Write(ex);
+                    sw.Write(DateTime.Now);
+                    sw.Write(ex.Message);
                     sw.Close();
                 }
 

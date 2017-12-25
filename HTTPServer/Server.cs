@@ -40,7 +40,6 @@ namespace HTTPServer
                 Console.WriteLine("new client accepted: {0}", clientSocket.RemoteEndPoint);
                 Thread newthread = new Thread(new ParameterizedThreadStart(HandleConnection));
                 newthread.Start(clientSocket);
-
             }
         }
 
@@ -88,65 +87,31 @@ namespace HTTPServer
         Response HandleRequest(Request request)
         {
             string content;
-            Response response;
             try
             {
                 //TODO: check for bad request 
                 if (!request.ParseRequest())
-                {
-                    content = LoadDefaultPage(Configuration.BadRequestDefaultPageName);
-                    response = new Response(StatusCode.BadRequest, "text/html", content, "");
-                    return response;
-
-                }
-
+                    return new Response(StatusCode.BadRequest, "text/html", LoadDefaultPage(Configuration.BadRequestDefaultPageName), "");
                 //TODO: map the relativeURI in request to get the physical path of the resource.
+                string physicalPath = Path.Combine(Configuration.RootPath, request.relativeURI);
                 //TODO: check for redirect
-
-                if (Configuration.RedirectionRules.ContainsKey(request.relativeURI))
-                {
-                    string RedirectionPath = Configuration.RedirectionRules[request.relativeURI];
-                    content = LoadDefaultPage(GetRedirectionPagePathIFExist(RedirectionPath));
-
-
-                    response = new Response(StatusCode.Redirect, "text/html", content, RedirectionPath);
-                    return response;
-                }
-                else
-                {
-                    //TODO: read the physical file
-
-                    content = LoadDefaultPage(request.relativeURI);
-                    //TODO: check file exists
-
-                    if (content != "")
-                    {
-
-                        // Create OK response
-                        return response = new Response(StatusCode.OK, "text/xml", content, null);
-                    }
-                    else
-                    {
-                        content = LoadDefaultPage("NotFound.html");
-                        return response = new Response(StatusCode.NotFound, "text/html", content, null);
-                    }
-                }
-
-
-
-
-                //done
+                string rediredtPagePath = GetRedirectionPagePathIFExist(request.relativeURI);
+                if (rediredtPagePath != "")
+                    return new Response(StatusCode.Redirect, "text/html", LoadDefaultPage(Configuration.RedirectionDefaultPageName), rediredtPagePath);
+                //TODO: check file exists
+                if (!File.Exists(physicalPath))
+                    return new Response(StatusCode.NotFound, "text/html", LoadDefaultPage(Configuration.NotFoundDefaultPageName), "");
+                //TODO: read the physical file
+                content = File.ReadAllText(physicalPath);
+                // Create OK response
+                return new Response(StatusCode.OK, "text/html", content, "");
             }
             catch (Exception ex)
             {
                 // TODO: log exception using Logger class
-                //done
                 Logger.LogException(ex);
-
-                // TODO: in case of exception, return Internal Server Error.
-                //done
-                content = LoadDefaultPage(Configuration.InternalErrorDefaultPageName);
-                return new Response(StatusCode.InternalServerError, "text/html", content, null);
+                // TODO: in case of exception, return Internal Server Error. 
+                return new Response(StatusCode.InternalServerError, "text/html", LoadDefaultPage(Configuration.InternalErrorDefaultPageName), "");
             }
         }
 
@@ -154,13 +119,10 @@ namespace HTTPServer
         {
             // using Configuration.RedirectionRules return the redirected page path if exists else returns empty
             //done
-            string redirectpath = Configuration.RootPath + "\\" + relativePath;
-            if (File.Exists(redirectpath))
-            {
-                return relativePath;
-            }
-            return string.Empty;
-
+            if (Configuration.RedirectionRules.ContainsKey(relativePath))
+                return Configuration.RedirectionRules[relativePath];
+            else
+                return string.Empty;
         }
 
         private string LoadDefaultPage(string defaultPageName)
@@ -174,10 +136,12 @@ namespace HTTPServer
                 Logger.LogException(new Exception("default page" + defaultPageName + "doesn't exists"));
                 return string.Empty;
             }
+            else {
             ss = new StreamReader(filePath);
             string file = ss.ReadToEnd();
             ss.Close();
             return file;
+            }
         }
 
         private void LoadRedirectionRules(string filePath)

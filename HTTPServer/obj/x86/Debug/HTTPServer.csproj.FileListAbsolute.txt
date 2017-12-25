@@ -7,3 +7,8 @@ F:\FCIS\Year 4\Computer Network\Template[2016-2017]\HTTPServer\bin\Debug\HTTPSer
 F:\FCIS\Year 4\Computer Network\Template[2016-2017]\HTTPServer\obj\x86\Debug\HTTPServer.csprojResolveAssemblyReference.cache
 F:\FCIS\Year 4\Computer Network\Template[2016-2017]\HTTPServer\obj\x86\Debug\HTTPServer.exe
 F:\FCIS\Year 4\Computer Network\Template[2016-2017]\HTTPServer\obj\x86\Debug\HTTPServer.pdb
+F:\Projects\HTTPServer\HTTPServer\obj\x86\Debug\HTTPServer.exe
+F:\Projects\HTTPServer\HTTPServer\obj\x86\Debug\HTTPServer.pdb
+F:\Projects\HTTPServer\HTTPServer\bin\Debug\HTTPServer.exe
+F:\Projects\HTTPServer\HTTPServer\bin\Debug\HTTPServer.pdb
+F:\Projects\HTTPServer\HTTPServer\obj\x86\Debug\HTTPServer.csprojResolveAssemblyReference.cache
